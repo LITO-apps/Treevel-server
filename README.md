@@ -7,15 +7,10 @@ This is a backend for [native app](https://github.com/LITO-apps/Treevel-client)
 ### Requirements
 
 - `Docker Engine: v19.03.5`
-
-### Build api server on docker
-
-```
-make build-image
-```
+- `docker-compose: v1.25.4`
 
 ### Run server
 
 ```
-make run
+$ docker-compose up -d
 ```

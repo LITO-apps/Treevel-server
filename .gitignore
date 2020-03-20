@@ -16,3 +16,6 @@
 
 # For editor
 .idea
+
+# For mysql
+mysql/data/
