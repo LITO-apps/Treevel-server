@@ -1,15 +1,13 @@
 use db;
 
-DROP TABLE IF EXISTS record;
-
-CREATE TABLE record
+CREATE TABLE IF NOT EXISTS record
 (
     id                INT NOT NULL AUTO_INCREMENT,
     player_id         INT NOT NULL,
     stage_id          INT NOT NULL,
-    is_clear          BIT(1),
-    play_times        INT,
-    first_clear_times INT,
-    min_clear_time    TIME,
+    is_clear          BOOLEAN DEFAULT FALSE NOT NULL COMMENT 'クリア回数',
+    play_times        INT NOT NULL COMMENT 'プレイ回数',
+    first_clear_times INT COMMENT '初回クリアまでのプレイ回数',
+    min_clear_time    TIME COMMENT '最短クリア時間',
     PRIMARY KEY (id)
 );
