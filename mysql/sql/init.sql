@@ -19,5 +19,6 @@ CREATE TABLE IF NOT EXISTS record
     first_clear_times INT COMMENT '初回クリアまでのプレイ回数',
     min_clear_time    TIME COMMENT '最短クリア時間',
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (player_id) REFERENCES player(id) ON DELETE CASCADE
 );
