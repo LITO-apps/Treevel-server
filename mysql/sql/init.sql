@@ -1,3 +1,4 @@
+# プレイヤー情報
 CREATE TABLE IF NOT EXISTS player
 (
     id                INT NOT NULL AUTO_INCREMENT,
@@ -9,6 +10,7 @@ CREATE TABLE IF NOT EXISTS player
     PRIMARY KEY (id)
 );
 
+# 各ステージに対する，各プレイヤーの記録
 CREATE TABLE IF NOT EXISTS record
 (
     id                INT NOT NULL AUTO_INCREMENT,
