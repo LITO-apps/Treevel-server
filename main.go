@@ -5,9 +5,11 @@ import (
 	"log"
 	"net/http"
 	"net/http/httputil"
+
+	"github.com/julienschmidt/httprouter"
 )
 
-func handler(w http.ResponseWriter, r *http.Request)  {
+func rootHandler(w http.ResponseWriter, r *http.Request, pr httprouter.Params)  {
 	dump, err := httputil.DumpRequest(r, true)
 
 	if err != nil {
@@ -22,13 +24,11 @@ func handler(w http.ResponseWriter, r *http.Request)  {
 }
 
 func main()  {
-	var httpServer http.Server
-	// Port number
-	httpServer.Addr = ":8080"
-	// Rooting
-	http.HandleFunc("/", handler)
-	// Log
-	log.Println("Server Start" + httpServer.Addr)
-	// Listen
-	log.Println(httpServer.ListenAndServe())
+	// ルーティングの設定
+	router := httprouter.New()
+	router.GET("/", rootHandler)
+
+	// サーバ起動
+	fmt.Println("Server Start")
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
