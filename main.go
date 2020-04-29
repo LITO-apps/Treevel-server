@@ -19,8 +19,12 @@ func rootHandler(w http.ResponseWriter, r *http.Request, pr httprouter.Params)  
 
 	fmt.Println(string(dump))
 
-	// FIXME: Unhandled error
-	fmt.Fprint(w, "hello world!\n")
+	_, err = fmt.Fprint(w, "hello world!\n")
+
+	if err != nil {
+		http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+		return
+	}
 }
 
 func main()  {
