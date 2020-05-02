@@ -1,6 +1,11 @@
 FROM golang:1.14-alpine3.11
 
-WORKDIR /go
+WORKDIR /go/src/app
+
 COPY . .
 
-CMD ["go", "run", "main.go"]
+RUN go build -mod=readonly -o app main.go
+
+EXPOSE 8080
+
+CMD ["./app"]

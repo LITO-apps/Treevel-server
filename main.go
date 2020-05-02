@@ -1,34 +1,38 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-	"net/http/httputil"
+    "fmt"
+    "log"
+    "net/http"
+    "net/http/httputil"
+
+    "github.com/julienschmidt/httprouter"
 )
 
-func handler(w http.ResponseWriter, r *http.Request)  {
-	dump, err := httputil.DumpRequest(r, true)
+func rootHandler(w http.ResponseWriter, r *http.Request, pr httprouter.Params) {
+    dump, err := httputil.DumpRequest(r, true)
 
-	if err != nil {
-		http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-		return
-	}
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
 
-	fmt.Println(string(dump))
+    fmt.Println(string(dump))
 
-	// FIXME: Unhandled error
-	fmt.Fprint(w, "hello world!\n")
+    _, err = fmt.Fprint(w, "hello world!\n")
+
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
 }
 
 func main()  {
-	var httpServer http.Server
-	// Port number
-	httpServer.Addr = ":8080"
-	// Rooting
-	http.HandleFunc("/", handler)
-	// Log
-	log.Println("Server Start" + httpServer.Addr)
-	// Listen
-	log.Println(httpServer.ListenAndServe())
+    // ルーティングの設定
+    router := httprouter.New()
+    router.GET("/", rootHandler)
+
+    // サーバ起動
+    fmt.Println("Server Start")
+    log.Fatal(http.ListenAndServe(":8080", router))
 }
