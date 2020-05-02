@@ -32,11 +32,7 @@ func main()  {
     router := httprouter.New()
     router.GET("/", rootHandler)
 
-    err := http.ListenAndServe(":8080", router)
-    if err != nil {
-        log.Fatalf("Listen and serve failed. %+v", err)
-    } else {
-        // サーバ起動
-        fmt.Println("Server Start")
-    }
+    // サーバ起動
+    fmt.Println("Server Start")
+    log.Fatal(http.ListenAndServe(":8080", router))
 }
