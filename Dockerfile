@@ -4,8 +4,9 @@ WORKDIR /go/src/app
 
 COPY . .
 
-RUN go build -mod=readonly -o app main.go
+RUN go mod download
 
 EXPOSE 8080
 
-CMD ["./app"]
+RUN go get github.com/pilu/fresh
+CMD ["fresh"]
