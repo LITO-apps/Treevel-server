@@ -3,5 +3,5 @@ db:
   database: db
   user: user
   password: password
-  host: db
+  host: mysql
   port: 3306

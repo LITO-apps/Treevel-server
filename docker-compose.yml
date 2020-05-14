@@ -9,8 +9,8 @@ services:
       - ./:/go/src/app
     restart: always
     depends_on:
-      - db
-  db:
+      - mysql
+  mysql:
     image: mysql:8.0.19
     ports:
       - "3306:3306"
