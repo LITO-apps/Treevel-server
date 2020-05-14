@@ -1,4 +1,4 @@
-db:
+development:
   dialect: mysql
   database: db
   user: user
