@@ -6,6 +6,8 @@ COPY . .
 
 RUN go mod download
 
+RUN go install github.com/gobuffalo/pop/soda
+
 EXPOSE 8080
 
 RUN go get github.com/pilu/fresh
