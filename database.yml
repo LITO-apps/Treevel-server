@@ -1,0 +1,7 @@
+db:
+  dialect: mysql
+  database: db
+  user: user
+  password: password
+  host: db
+  port: 3306
