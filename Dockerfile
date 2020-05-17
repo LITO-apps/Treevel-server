@@ -6,7 +6,7 @@ COPY . .
 
 RUN go mod download
 
-RUN go install github.com/gobuffalo/pop/soda
+RUN go install github.com/gobuffalo/pop/v5/soda
 
 EXPOSE 8080
 
