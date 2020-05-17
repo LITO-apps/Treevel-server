@@ -2,7 +2,8 @@ FROM golang:1.14-alpine3.11
 
 WORKDIR /go/src/app
 
-COPY . .
+COPY go.mod .
+COPY go.mod .
 
 RUN go mod download
 
