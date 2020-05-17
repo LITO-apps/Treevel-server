@@ -1,0 +1,1 @@
+ALTER TABLE player modify create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT 'アカウント作成時刻'
