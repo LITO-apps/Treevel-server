@@ -8,6 +8,7 @@ This is a backend for [native app](https://github.com/LITO-apps/Treevel-client)
 
 - `Docker Engine: v19.03.5`
 - `docker-compose: v1.25.4`
+- `go: v1.14`
 
 ### Run server
 
