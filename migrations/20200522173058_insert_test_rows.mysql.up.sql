@@ -1,0 +1,2 @@
+INSERT INTO players VALUES (1, 'test', 1, '2020-05-02 12:48:35', '2020-05-02 12:48:35');
+INSERT INTO records VALUES (1, 1, 1, FALSE, 0, 1, '15:25:07')
