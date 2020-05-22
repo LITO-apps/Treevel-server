@@ -52,7 +52,7 @@ func getAllPlayersHandler(w http.ResponseWriter, r *http.Request, pr httprouter.
         return
     }
 
-    _, err = fmt.Fprint(w, players)
+    _, err = fmt.Fprintln(w, players)
 
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
@@ -83,7 +83,7 @@ func getAllRecordsHandler(w http.ResponseWriter, r *http.Request, pr httprouter.
         return
     }
 
-    _, err = fmt.Fprint(w, records)
+    _, err = fmt.Fprintln(w, records)
 
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
