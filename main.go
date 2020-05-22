@@ -2,11 +2,11 @@ package main
 
 import (
     "fmt"
-    "github.com/LITO-apps/Treevel-server/models"
     "log"
     "net/http"
     "net/http/httputil"
 
+    "github.com/LITO-apps/Treevel-server/models"
     "github.com/gobuffalo/pop"
     "github.com/julienschmidt/httprouter"
 )
