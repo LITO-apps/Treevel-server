@@ -12,4 +12,4 @@ RUN go install github.com/gobuffalo/pop/v5/soda
 EXPOSE 8080
 
 RUN go get github.com/pilu/fresh
-CMD ["fresh"]
+ENTRYPOINT ["fresh"]
