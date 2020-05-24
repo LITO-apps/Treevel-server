@@ -39,14 +39,14 @@ func getAllPlayersHandler(w http.ResponseWriter, r *http.Request, pr httprouter.
 
     fmt.Println(string(dump))
 
-    tx, err := pop.Connect("development")
+    db, err := pop.Connect("development")
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return
     }
 
     var players []models.Player
-    err = tx.All(&players)
+    err = db.All(&players)
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return
@@ -70,14 +70,14 @@ func getAllRecordsHandler(w http.ResponseWriter, r *http.Request, pr httprouter.
 
     fmt.Println(string(dump))
 
-    tx, err := pop.Connect("development")
+    db, err := pop.Connect("development")
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return
     }
 
     var records []models.Record
-    err = tx.All(&records)
+    err = db.All(&records)
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return
@@ -91,7 +91,7 @@ func getAllRecordsHandler(w http.ResponseWriter, r *http.Request, pr httprouter.
     }
 }
 
-func main()  {
+func main() {
     // ルーティングの設定
     router := httprouter.New()
     router.GET("/", rootHandler)
