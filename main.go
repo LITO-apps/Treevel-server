@@ -94,7 +94,7 @@ func getAllRecordsHandler(w http.ResponseWriter, r *http.Request, pr httprouter.
     }
 }
 
-func createPlayer(w http.ResponseWriter, r *http.Request, pr httprouter.Params) {
+func createPlayer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
     dump, err := httputil.DumpRequest(r, true)
 
     if err != nil {
@@ -124,7 +124,7 @@ func createPlayer(w http.ResponseWriter, r *http.Request, pr httprouter.Params) 
     }
 }
 
-func createRecord(w http.ResponseWriter, r *http.Request, pr httprouter.Params) {
+func createRecord(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
     dump, err := httputil.DumpRequest(r, true)
 
     if err != nil {
@@ -156,15 +156,13 @@ func createRecord(w http.ResponseWriter, r *http.Request, pr httprouter.Params) 
         FirstClearTimes: nulls.NewInt(firstClearTimes),
         MinClearTime: nulls.NewString(minClearTime),
     }
-    _, err = db.ValidateAndSave(&record)
+    _, err = db.ValidateAndCreate(&record)
 
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return
     }
 }
-
-
 
 func main() {
     // ルーティングの設定
