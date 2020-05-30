@@ -2,12 +2,14 @@ package main
 
 import (
     "fmt"
+    "log"
+    "net/http"
+
+    "github.com/julienschmidt/httprouter"
+
     "github.com/LITO-apps/Treevel-server/handler"
     "github.com/LITO-apps/Treevel-server/infrastructure/persistence"
     "github.com/LITO-apps/Treevel-server/usecase"
-    "github.com/julienschmidt/httprouter"
-    "log"
-    "net/http"
 )
 
 func main() {

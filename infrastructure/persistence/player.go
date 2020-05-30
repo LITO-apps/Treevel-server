@@ -1,9 +1,10 @@
 package persistence
 
 import (
+    "github.com/gobuffalo/pop"
+
     "github.com/LITO-apps/Treevel-server/domain/models"
     "github.com/LITO-apps/Treevel-server/domain/repository"
-    "github.com/gobuffalo/pop"
 )
 
 type playerPersistence struct {}

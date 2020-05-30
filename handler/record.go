@@ -2,9 +2,11 @@ package handler
 
 import (
     "fmt"
-    "github.com/LITO-apps/Treevel-server/usecase"
-    "github.com/julienschmidt/httprouter"
     "net/http"
+
+    "github.com/julienschmidt/httprouter"
+
+    "github.com/LITO-apps/Treevel-server/usecase"
 )
 
 type RecordHandler interface {
