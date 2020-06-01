@@ -6,7 +6,6 @@ import (
     "net/http"
     "net/http/httputil"
     "strconv"
-    "time"
 
     "github.com/LITO-apps/Treevel-server/models"
     "github.com/gobuffalo/nulls"
@@ -33,42 +32,12 @@ func main() {
     router := httprouter.New()
     router.GET("/get_all_players", playerHandler.HandleGetAllPlayers)
     router.GET("/get_all_records", recordHandler.HandleGetAllRecords)
-    router.POST("/create_player", createPlayer)
+    router.POST("/create_player", playerHandler.HandleCreatePlayer)
     router.POST("/create_record", createRecord)
 
     // サーバ起動
     fmt.Println("Server Start")
     log.Fatal(http.ListenAndServe(":8080", router))
-}
-
-func createPlayer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-    dump, err := httputil.DumpRequest(r, true)
-
-    if err != nil {
-        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-        return
-    }
-
-    fmt.Println(string(dump))
-
-    // parse post data
-    name := r.FormValue("name")
-
-    t := time.Now()
-
-    db, err := pop.Connect("development")
-    if err != nil {
-        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-        return
-    }
-
-    player := models.Player{Name: name, LastLoginTime: t}
-    _, err = db.ValidateAndCreate(&player)
-
-    if err != nil {
-        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-        return
-    }
 }
 
 func createRecord(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {

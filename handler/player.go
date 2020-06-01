@@ -3,6 +3,7 @@ package handler
 import (
     "fmt"
     "net/http"
+    "time"
 
     "github.com/julienschmidt/httprouter"
 
@@ -11,6 +12,7 @@ import (
 
 type PlayerHandler interface {
     HandleGetAllPlayers(http.ResponseWriter, *http.Request, httprouter.Params)
+    HandleCreatePlayer(http.ResponseWriter, *http.Request, httprouter.Params)
 }
 
 type playerHandler struct {
@@ -29,6 +31,17 @@ func (ph playerHandler) HandleGetAllPlayers(w http.ResponseWriter, r *http.Reque
     }
 
     _, err = fmt.Fprintln(w, players)
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+}
+
+func (ph playerHandler) HandleCreatePlayer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    name := r.FormValue("name")
+    t := time.Now()
+
+    err := ph.playerUseCase.CreatePlayer(name, t)
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return
