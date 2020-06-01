@@ -3,6 +3,7 @@ package handler
 import (
     "fmt"
     "net/http"
+    "strconv"
 
     "github.com/julienschmidt/httprouter"
 
@@ -11,6 +12,7 @@ import (
 
 type RecordHandler interface {
     HandleGetAllRecords(http.ResponseWriter, *http.Request, httprouter.Params)
+    HandleCreateRecord(http.ResponseWriter, *http.Request, httprouter.Params)
 }
 
 type recordHandler struct {
@@ -29,6 +31,26 @@ func (rh recordHandler) HandleGetAllRecords(w http.ResponseWriter, r *http.Reque
     }
 
     _, err = fmt.Fprintln(w, records)
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+}
+
+func (rh recordHandler) HandleCreateRecord(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    // parse post data
+    playerID, err := strconv.Atoi(r.FormValue("player_id"))
+    stageID, err := strconv.Atoi(r.FormValue("stage_id"))
+    isClear, err := strconv.ParseBool(r.FormValue("is_clear"))
+    playTimes, err := strconv.Atoi(r.FormValue("play_times"))
+    firstClearTimes, err := strconv.Atoi(r.FormValue("first_clear_times"))
+    minClearTime := r.FormValue("min_clear_time")
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+
+    err = rh.recordUseCase.CreateRecord(playerID, stageID, isClear, playTimes, firstClearTimes, minClearTime)
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return

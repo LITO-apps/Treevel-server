@@ -1,6 +1,7 @@
 package persistence
 
 import (
+    "github.com/gobuffalo/nulls"
     "github.com/gobuffalo/pop"
 
     "github.com/LITO-apps/Treevel-server/domain/models"
@@ -27,4 +28,27 @@ func (rp recordPersistence) GetAllRecords() ([]models.Record, error) {
     }
 
     return records, nil
+}
+
+func (rp recordPersistence) CreateRecord(playerID int, stageID int, isClear bool, playTimes int, firstClearTimes int, minClearTime string) error {
+    record := models.Record {
+        PlayerID: playerID, 
+        StageId: stageID,
+        IsClear: isClear,
+        PlayTimes: playTimes,
+        FirstClearTimes: nulls.NewInt(firstClearTimes),
+        MinClearTime: nulls.NewString(minClearTime),
+    }
+
+    db, err := pop.Connect("development")
+    if err != nil {
+        return err
+    }
+
+    _, err = db.ValidateAndCreate(&record)
+    if err != nil {
+        return err
+    }
+
+    return nil
 }
