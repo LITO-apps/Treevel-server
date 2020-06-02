@@ -27,6 +27,8 @@ func main() {
     router := httprouter.New()
     router.GET("/get_all_players", playerHandler.HandleGetAllPlayers)
     router.GET("/get_all_records", recordHandler.HandleGetAllRecords)
+    router.POST("/create_player", playerHandler.HandleCreatePlayer)
+    router.POST("/create_record", recordHandler.HandleCreateRecord)
 
     // サーバ起動
     fmt.Println("Server Start")
