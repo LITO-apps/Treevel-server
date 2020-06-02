@@ -2,7 +2,7 @@ package repository
 
 import (
     "github.com/LITO-apps/Treevel-server/domain/models"
-    "github.com/gobuffalo/pop/nulls"
+    "github.com/gobuffalo/nulls"
 )
 
 type RecordRepository interface {

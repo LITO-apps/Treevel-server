@@ -3,7 +3,7 @@ package usecase
 import (
     "github.com/LITO-apps/Treevel-server/domain/models"
     "github.com/LITO-apps/Treevel-server/domain/repository"
-    "github.com/gobuffalo/pop/nulls"
+    "github.com/gobuffalo/nulls"
 )
 
 type RecordUseCase interface {

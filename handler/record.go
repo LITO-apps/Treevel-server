@@ -5,7 +5,7 @@ import (
     "net/http"
     "strconv"
 
-    "github.com/gobuffalo/pop/nulls"
+    "github.com/gobuffalo/nulls"
     "github.com/julienschmidt/httprouter"
 
     "github.com/LITO-apps/Treevel-server/usecase"
