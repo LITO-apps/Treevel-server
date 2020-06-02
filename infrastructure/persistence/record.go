@@ -30,14 +30,14 @@ func (rp recordPersistence) GetAllRecords() ([]models.Record, error) {
     return records, nil
 }
 
-func (rp recordPersistence) CreateRecord(playerID int, stageID int, isClear bool, playTimes int, firstClearTimes int, minClearTime string) error {
+func (rp recordPersistence) CreateRecord(playerID int, stageID int, isClear bool, playTimes int, firstClearTimes nulls.Int, minClearTime nulls.String) error {
     record := models.Record {
         PlayerID: playerID, 
         StageId: stageID,
         IsClear: isClear,
         PlayTimes: playTimes,
-        FirstClearTimes: nulls.NewInt(firstClearTimes),
-        MinClearTime: nulls.NewString(minClearTime),
+        FirstClearTimes: firstClearTimes,
+        MinClearTime: minClearTime,
     }
 
     db, err := pop.Connect("development")

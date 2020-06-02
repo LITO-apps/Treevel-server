@@ -5,6 +5,7 @@ import (
     "net/http"
     "strconv"
 
+    "github.com/gobuffalo/pop/nulls"
     "github.com/julienschmidt/httprouter"
 
     "github.com/LITO-apps/Treevel-server/usecase"
@@ -43,14 +44,15 @@ func (rh recordHandler) HandleCreateRecord(w http.ResponseWriter, r *http.Reques
     stageID, err := strconv.Atoi(r.FormValue("stage_id"))
     isClear, err := strconv.ParseBool(r.FormValue("is_clear"))
     playTimes, err := strconv.Atoi(r.FormValue("play_times"))
-    firstClearTimes, err := strconv.Atoi(r.FormValue("first_clear_times"))
-    minClearTime := r.FormValue("min_clear_time")
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return
     }
 
-    err = rh.recordUseCase.CreateRecord(playerID, stageID, isClear, playTimes, firstClearTimes, minClearTime)
+    firstClearTimes, err := strconv.Atoi(r.FormValue("first_clear_times"))
+    minClearTime := r.FormValue("min_clear_time")
+
+    err = rh.recordUseCase.CreateRecord(playerID, stageID, isClear, playTimes, nulls.Int{firstClearTimes, err == nil}, nulls.NewString(minClearTime))
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return
