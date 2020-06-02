@@ -40,7 +40,7 @@ func (pp playerPersistence) CreatePlayer(name string, t time.Time) error {
     }
 
     _, err = db.ValidateAndCreate(&player)
-    if (err != nil) {
+    if err != nil {
         return err
     }
     
