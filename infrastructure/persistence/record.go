@@ -1,9 +1,10 @@
 package persistence
 
 import (
+    "log"
+
     "github.com/gobuffalo/nulls"
     "github.com/gobuffalo/pop"
-    "log"
 
     "github.com/LITO-apps/Treevel-server/domain/models"
     "github.com/LITO-apps/Treevel-server/domain/repository"
@@ -19,7 +20,7 @@ func NewRecordPersistence() repository.RecordRepository {
         // DB との接続ができない場合には強制終了
         log.Fatal(err)
     }
-    log.Print("Succeed to connect database in `Record`")
+    log.Print("Succeeded in connecting database in `Record`")
 
     return &recordPersistence{db: db}
 }

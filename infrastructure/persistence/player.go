@@ -20,7 +20,7 @@ func NewPlayerPersistence() repository.PlayerRepository {
         // DB との接続ができない場合には強制終了
         log.Fatal(err)
     }
-    log.Print("Succeed to connect database in `Player`")
+    log.Print("Succeeded in connecting database in `Player`")
 
     return &playerPersistence{db: db}
 }
