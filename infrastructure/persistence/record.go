@@ -1,6 +1,8 @@
 package persistence
 
 import (
+    "log"
+
     "github.com/gobuffalo/nulls"
     "github.com/gobuffalo/pop"
 
@@ -8,21 +10,26 @@ import (
     "github.com/LITO-apps/Treevel-server/domain/repository"
 )
 
-type recordPersistence struct {}
+type recordPersistence struct {
+    db *pop.Connection
+}
 
 func NewRecordPersistence() repository.RecordRepository {
-    return &recordPersistence{}
+    db, err := pop.Connect("development")
+    if err != nil {
+        // DB との接続ができない場合には強制終了
+        log.Fatal(err)
+    }
+    log.Print("Succeeded in connecting database in `Record`")
+
+    return &recordPersistence{db: db}
 }
 
 func (rp recordPersistence) GetAllRecords() ([]models.Record, error) {
     var records []models.Record
+    db := rp.db
 
-    db, err := pop.Connect("development")
-    if err != nil {
-        return nil, err
-    }
-
-    err = db.All(&records)
+    err := db.All(&records)
     if err != nil {
         return nil, err
     }
@@ -32,7 +39,7 @@ func (rp recordPersistence) GetAllRecords() ([]models.Record, error) {
 
 func (rp recordPersistence) CreateRecord(playerID int, stageID int, isClear bool, playTimes int, firstClearTimes nulls.Int, minClearTime nulls.String) error {
     record := models.Record {
-        PlayerID: playerID, 
+        PlayerID: playerID,
         StageId: stageID,
         IsClear: isClear,
         PlayTimes: playTimes,
@@ -40,12 +47,9 @@ func (rp recordPersistence) CreateRecord(playerID int, stageID int, isClear bool
         MinClearTime: minClearTime,
     }
 
-    db, err := pop.Connect("development")
-    if err != nil {
-        return err
-    }
+    var db = rp.db
 
-    _, err = db.ValidateAndCreate(&record)
+    _, err := db.ValidateAndCreate(&record)
     if err != nil {
         return err
     }

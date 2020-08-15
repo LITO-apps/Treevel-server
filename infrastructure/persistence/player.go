@@ -1,6 +1,7 @@
 package persistence
 
 import (
+    "log"
     "time"
 
     "github.com/gobuffalo/pop"
@@ -9,21 +10,26 @@ import (
     "github.com/LITO-apps/Treevel-server/domain/repository"
 )
 
-type playerPersistence struct {}
+type playerPersistence struct {
+    db *pop.Connection
+}
 
 func NewPlayerPersistence() repository.PlayerRepository {
-    return &playerPersistence{}
+    db, err := pop.Connect("development")
+    if err != nil {
+        // DB との接続ができない場合には強制終了
+        log.Fatal(err)
+    }
+    log.Print("Succeeded in connecting database in `Player`")
+
+    return &playerPersistence{db: db}
 }
 
 func (pp playerPersistence) GetAllPlayers() ([]models.Player, error) {
     var players []models.Player
+    db := pp.db
 
-    db, err := pop.Connect("development")
-    if err != nil {
-        return nil, err
-    }
-
-    err = db.All(&players)
+    err := db.All(&players)
     if err != nil {
         return nil, err
     }
@@ -33,16 +39,12 @@ func (pp playerPersistence) GetAllPlayers() ([]models.Player, error) {
 
 func (pp playerPersistence) CreatePlayer(name string, t time.Time) error {
     player := models.Player{Name: name, LastLoginTime: t}
-    
-    db, err := pop.Connect("development")
+    db := pp.db
+
+    _, err := db.ValidateAndCreate(&player)
     if err != nil {
         return err
     }
 
-    _, err = db.ValidateAndCreate(&player)
-    if err != nil {
-        return err
-    }
-    
     return nil
 }
