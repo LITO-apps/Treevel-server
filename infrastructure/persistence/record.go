@@ -37,14 +37,14 @@ func (rp recordPersistence) GetAllRecords() ([]models.Record, error) {
     return records, nil
 }
 
-func (rp recordPersistence) CreateRecord(playerID int, stageID int, isClear bool, playTimes int, firstClearTimes nulls.Int, minClearTime nulls.String) error {
+func (rp recordPersistence) CreateRecord(playerID int, stageID int, isClear bool, playTimes int, firstClearTimes nulls.Int, minClearTime nulls.Float32) error {
     record := models.Record {
         PlayerID: playerID,
         StageId: stageID,
         IsClear: isClear,
         PlayTimes: playTimes,
         FirstClearTimes: firstClearTimes,
-        MinClearTime: minClearTime,
+        ClearTime: minClearTime,
     }
 
     var db = rp.db

@@ -8,7 +8,7 @@ import (
 
 type RecordUseCase interface {
     GetAllRecords() ([]models.Record, error)
-    CreateRecord(int, int, bool, int, nulls.Int, nulls.String) error
+    CreateRecord(int, int, bool, int, nulls.Int, nulls.Float32) error
 }
 
 type recordUseCase struct {
@@ -28,8 +28,8 @@ func (ru recordUseCase) GetAllRecords() ([]models.Record, error) {
     return records, nil
 }
 
-func (ru recordUseCase) CreateRecord(playerID int, stageID int, isClear bool, playTimes int, firstClearTimes nulls.Int, minClearTime nulls.String) error {
-    err := ru.recordRepository.CreateRecord(playerID, stageID, isClear, playTimes, firstClearTimes, minClearTime)
+func (ru recordUseCase) CreateRecord(playerID int, stageID int, isClear bool, playTimes int, firstClearTimes nulls.Int, clearTime nulls.Float32) error {
+    err := ru.recordRepository.CreateRecord(playerID, stageID, isClear, playTimes, firstClearTimes, clearTime)
     if err != nil {
         return err
     }

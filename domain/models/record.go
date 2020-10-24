@@ -9,5 +9,5 @@ type Record struct {
     IsClear         bool            `db:"is_clear"`
     PlayTimes       int             `db:"play_times"`
     FirstClearTimes nulls.Int       `db:"first_clear_times"`
-    MinClearTime    nulls.String    `db:"min_clear_time"`
+    ClearTime       nulls.Float32   `db:"clear_time"`
 }
