@@ -30,6 +30,7 @@ func main() {
     router.POST("/create_player", playerHandler.HandleCreatePlayer)
     router.POST("/create_record", recordHandler.HandleCreateRecord)
     router.POST("/stageinfo/get/all_user_min_clear_time", recordHandler.HandleStageInfoGetAllUserMinClearTime)
+    router.POST("/stageinfo/get/avg_clear_rate", recordHandler.HandleStageInfoGetAvgClearRate)
 
     // サーバ起動
     fmt.Println("Server Start")

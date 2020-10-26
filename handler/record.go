@@ -15,6 +15,7 @@ type RecordHandler interface {
     HandleGetAllRecords(http.ResponseWriter, *http.Request, httprouter.Params)
     HandleCreateRecord(http.ResponseWriter, *http.Request, httprouter.Params)
     HandleStageInfoGetAllUserMinClearTime(http.ResponseWriter, *http.Request, httprouter.Params)
+    HandleStageInfoGetAvgClearRate(http.ResponseWriter, *http.Request, httprouter.Params)
 }
 
 type recordHandler struct {
@@ -82,6 +83,30 @@ func (rh recordHandler) HandleStageInfoGetAllUserMinClearTime(w http.ResponseWri
     } else {
         _, err = fmt.Fprintln(w, nil)
     }
+
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+}
+
+func (rh recordHandler) HandleStageInfoGetAvgClearRate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    // parse post data
+    stageID, err := strconv.Atoi(r.FormValue("stage_id"))
+
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+
+    ret, err := rh.recordUseCase.GetStageInfoAvgClearRate(stageID)
+
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+
+    _, err = fmt.Fprintln(w, ret)
 
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)

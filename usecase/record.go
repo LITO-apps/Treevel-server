@@ -10,6 +10,7 @@ type RecordUseCase interface {
     GetAllRecords() ([]models.Record, error)
     CreateRecord(int, int, bool, int, nulls.Int, nulls.Float32) error
     GetStageInfoAllUserMinClearTime(int) (nulls.Float32, error) 
+    GetStageInfoAvgClearRate(int) (float32, error)
 }
 
 type recordUseCase struct {
@@ -25,6 +26,16 @@ func (ru recordUseCase) GetStageInfoAllUserMinClearTime (stageID int) (nulls.Flo
 
     if (err != nil) {
         return nulls.Float32{}, err
+    }
+
+    return clearTime, nil
+}
+
+func (ru recordUseCase) GetStageInfoAvgClearRate (stageID int) (float32, error) {
+    clearTime , err := ru.recordRepository.GetStageInfoAvgClearRate(stageID)
+
+    if (err != nil) {
+        return 0, err
     }
 
     return clearTime, nil
