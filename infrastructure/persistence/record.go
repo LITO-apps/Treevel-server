@@ -56,3 +56,25 @@ func (rp recordPersistence) CreateRecord(playerID int, stageID int, isClear bool
 
     return nil
 }
+
+func (rp recordPersistence) GetStageInfoAllUserMinClearTime(stageID int) (nulls.Float32, error) {
+    db := rp.db
+    record := []models.Record{}
+
+    query := db.Where("stage_id = ? AND clear_time IS NOT NULL", stageID).Order("clear_time asc")
+    err := query.All(&record)
+
+    if (err != nil) {
+        return nulls.Float32{}, err
+    }
+
+    if (len(record) > 0) {
+        // ソートしているので0が一番小さいやつ
+        min := record[0]
+
+        if (min.ClearTime.Valid) {
+            return nulls.Float32(min.ClearTime) , nil
+        }
+    }
+    return nulls.Float32{}, nil
+}

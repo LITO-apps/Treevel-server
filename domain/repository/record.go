@@ -8,4 +8,5 @@ import (
 type RecordRepository interface {
     GetAllRecords() ([]models.Record, error)
     CreateRecord(int, int, bool, int, nulls.Int, nulls.Float32) error
+    GetStageInfoAllUserMinClearTime(int) (nulls.Float32, error) 
 }

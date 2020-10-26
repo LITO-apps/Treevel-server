@@ -14,6 +14,7 @@ import (
 type RecordHandler interface {
     HandleGetAllRecords(http.ResponseWriter, *http.Request, httprouter.Params)
     HandleCreateRecord(http.ResponseWriter, *http.Request, httprouter.Params)
+    HandleStageInfoGetAllUserMinClearTime(http.ResponseWriter, *http.Request, httprouter.Params)
 }
 
 type recordHandler struct {
@@ -53,8 +54,35 @@ func (rh recordHandler) HandleCreateRecord(w http.ResponseWriter, r *http.Reques
     minClearTime, err := strconv.ParseFloat(r.FormValue("min_clear_time"), 32)
 
     err = rh.recordUseCase.CreateRecord(playerID, stageID, isClear, playTimes, nulls.Int{Int: firstClearTimes, Valid: err == nil}, nulls.NewFloat32(float32(minClearTime)))
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+}
 
-    err = rh.recordUseCase.CreateRecord(playerID, stageID, isClear, playTimes, nulls.Int{Int: firstClearTimes, Valid: err == nil}, nulls.NewString(minClearTime))
+func (rh recordHandler) HandleStageInfoGetAllUserMinClearTime(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+    // parse post data
+    stageID, err := strconv.Atoi(r.FormValue("stage_id"))
+
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+
+    ret, err := rh.recordUseCase.GetStageInfoAllUserMinClearTime(stageID)
+
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+
+    // nullじゃない場合
+    if (ret.Valid) {
+        _, err = fmt.Fprintln(w, ret.Float32)
+    } else {
+        _, err = fmt.Fprintln(w, nil)
+    }
+
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return

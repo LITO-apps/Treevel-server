@@ -9,6 +9,7 @@ import (
 type RecordUseCase interface {
     GetAllRecords() ([]models.Record, error)
     CreateRecord(int, int, bool, int, nulls.Int, nulls.Float32) error
+    GetStageInfoAllUserMinClearTime(int) (nulls.Float32, error) 
 }
 
 type recordUseCase struct {
@@ -17,6 +18,16 @@ type recordUseCase struct {
 
 func NewRecordUseCase(rr repository.RecordRepository) RecordUseCase {
     return &recordUseCase{rr}
+}
+
+func (ru recordUseCase) GetStageInfoAllUserMinClearTime (stageID int) (nulls.Float32, error) {
+    clearTime , err := ru.recordRepository.GetStageInfoAllUserMinClearTime(stageID)
+
+    if (err != nil) {
+        return nulls.Float32{}, err
+    }
+
+    return clearTime, nil
 }
 
 func (ru recordUseCase) GetAllRecords() ([]models.Record, error) {

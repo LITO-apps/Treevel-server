@@ -29,6 +29,7 @@ func main() {
     router.GET("/get_all_records", recordHandler.HandleGetAllRecords)
     router.POST("/create_player", playerHandler.HandleCreatePlayer)
     router.POST("/create_record", recordHandler.HandleCreateRecord)
+    router.POST("/stageinfo/get/all_user_min_clear_time", recordHandler.HandleStageInfoGetAllUserMinClearTime)
 
     // サーバ起動
     fmt.Println("Server Start")
