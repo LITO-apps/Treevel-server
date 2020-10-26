@@ -98,8 +98,8 @@ func (rp recordPersistence) GetStageInfoAvgClearRate(stageID int) (float32, erro
 
     fmt.Println(playNum)
 
-    // 分母が0の場合を回避
-    if (playNum < 0) {
+    // 分母が不正の場合
+    if (playNum <= 0) {
         return 0, nil
     }
 
