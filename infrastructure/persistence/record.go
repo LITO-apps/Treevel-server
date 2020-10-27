@@ -1,6 +1,7 @@
 package persistence
 
 import (
+    "fmt"
     "log"
 
     "github.com/gobuffalo/nulls"
