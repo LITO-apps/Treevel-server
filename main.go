@@ -5,7 +5,7 @@ import (
     "log"
     "net/http"
 
-    "github.com/julienschmidt/httprouter"
+    "github.com/gorilla/mux"
 
     "github.com/LITO-apps/Treevel-server/handler"
     "github.com/LITO-apps/Treevel-server/infrastructure/persistence"
@@ -24,11 +24,11 @@ func main() {
     recordHandler := handler.NewRecordHandler(recordUseCase)
 
     // ルーティングの設定
-    router := httprouter.New()
-    router.GET("/get_all_players", playerHandler.HandleGetAllPlayers)
-    router.GET("/get_all_records", recordHandler.HandleGetAllRecords)
-    router.POST("/create_player", playerHandler.HandleCreatePlayer)
-    router.POST("/create_record", recordHandler.HandleCreateRecord)
+    router := mux.NewRouter()
+    router.HandleFunc("/get_all_players", playerHandler.HandleGetAllPlayers).Methods("GET")
+    router.HandleFunc("/get_all_records", recordHandler.HandleGetAllRecords).Methods("GET")
+    router.HandleFunc("/create_player", playerHandler.HandleCreatePlayer).Methods("POST")
+    router.HandleFunc("/create_record", recordHandler.HandleCreateRecord).Methods("POST")
 
     // サーバ起動
     fmt.Println("Server Start")
