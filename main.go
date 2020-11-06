@@ -1,15 +1,15 @@
 package main
 
 import (
-    "fmt"
-    "log"
-    "net/http"
+	"fmt"
+	"log"
+	"net/http"
 
-    "github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 
-    "github.com/LITO-apps/Treevel-server/handler"
-    "github.com/LITO-apps/Treevel-server/infrastructure/persistence"
-    "github.com/LITO-apps/Treevel-server/usecase"
+	"github.com/LITO-apps/Treevel-server/handler"
+	"github.com/LITO-apps/Treevel-server/infrastructure/persistence"
+	"github.com/LITO-apps/Treevel-server/usecase"
 )
 
 func main() {
@@ -24,13 +24,14 @@ func main() {
     recordHandler := handler.NewRecordHandler(recordUseCase)
 
     // ルーティングの設定
-    router := httprouter.New()
-    router.GET("/get_all_players", playerHandler.HandleGetAllPlayers)
-    router.GET("/get_all_records", recordHandler.HandleGetAllRecords)
-    router.POST("/create_player", playerHandler.HandleCreatePlayer)
-    router.POST("/create_record", recordHandler.HandleCreateRecord)
-    router.POST("/stageinfo/get/all_user_min_clear_time", recordHandler.HandleStageInfoGetAllUserMinClearTime)
-    router.POST("/stageinfo/get/avg_clear_rate", recordHandler.HandleStageInfoGetAvgClearRate)
+    router := mux.NewRouter()
+    router.HandleFunc("/get_all_players", playerHandler.HandleGetAllPlayers).Methods("GET")
+    router.HandleFunc("/get_all_records", recordHandler.HandleGetAllRecords).Methods("GET")
+    router.HandleFunc("/create_player", playerHandler.HandleCreatePlayer).Methods("POST")
+    router.HandleFunc("/create_record", recordHandler.HandleCreateRecord).Methods("POST")
+    router.HandleFunc("/stageinfo/get/all_user_min_clear_time", recordHandler.HandleStageInfoGetAllUserMinClearTime).Methods("POST")
+    router.HandleFunc("/stageinfo/get/avg_clear_rate", recordHandler.HandleStageInfoGetAvgClearRate).Methods("POST")
+
 
     // サーバ起動
     fmt.Println("Server Start")

@@ -1,21 +1,20 @@
 package handler
 
 import (
-    "fmt"
-    "net/http"
-    "strconv"
+	"fmt"
+	"net/http"
+	"strconv"
 
-    "github.com/gobuffalo/nulls"
-    "github.com/julienschmidt/httprouter"
+	"github.com/gobuffalo/nulls"
 
-    "github.com/LITO-apps/Treevel-server/usecase"
+	"github.com/LITO-apps/Treevel-server/usecase"
 )
 
 type RecordHandler interface {
-    HandleGetAllRecords(http.ResponseWriter, *http.Request, httprouter.Params)
-    HandleCreateRecord(http.ResponseWriter, *http.Request, httprouter.Params)
-    HandleStageInfoGetAllUserMinClearTime(http.ResponseWriter, *http.Request, httprouter.Params)
-    HandleStageInfoGetAvgClearRate(http.ResponseWriter, *http.Request, httprouter.Params)
+    HandleGetAllRecords(http.ResponseWriter, *http.Request)
+    HandleCreateRecord(http.ResponseWriter, *http.Request)
+    HandleStageInfoGetAllUserMinClearTime(http.ResponseWriter, *http.Request)
+    HandleStageInfoGetAvgClearRate(http.ResponseWriter, *http.Request)
 }
 
 type recordHandler struct {
@@ -26,7 +25,7 @@ func NewRecordHandler(ru usecase.RecordUseCase) RecordHandler {
     return &recordHandler{ru}
 }
 
-func (rh recordHandler) HandleGetAllRecords(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (rh recordHandler) HandleGetAllRecords(w http.ResponseWriter, r *http.Request) {
     records, err := rh.recordUseCase.GetAllRecords()
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
@@ -40,7 +39,7 @@ func (rh recordHandler) HandleGetAllRecords(w http.ResponseWriter, r *http.Reque
     }
 }
 
-func (rh recordHandler) HandleCreateRecord(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (rh recordHandler) HandleCreateRecord(w http.ResponseWriter, r *http.Request) {
     // parse post data
     playerID, err := strconv.Atoi(r.FormValue("player_id"))
     stageID, err := strconv.Atoi(r.FormValue("stage_id"))
@@ -61,7 +60,7 @@ func (rh recordHandler) HandleCreateRecord(w http.ResponseWriter, r *http.Reques
     }
 }
 
-func (rh recordHandler) HandleStageInfoGetAllUserMinClearTime(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (rh recordHandler) HandleStageInfoGetAllUserMinClearTime(w http.ResponseWriter, r *http.Request) {
     // parse post data
     stageID, err := strconv.Atoi(r.FormValue("stage_id"))
 
@@ -90,7 +89,7 @@ func (rh recordHandler) HandleStageInfoGetAllUserMinClearTime(w http.ResponseWri
     }
 }
 
-func (rh recordHandler) HandleStageInfoGetAvgClearRate(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (rh recordHandler) HandleStageInfoGetAvgClearRate(w http.ResponseWriter, r *http.Request) {
     // parse post data
     stageID, err := strconv.Atoi(r.FormValue("stage_id"))
 

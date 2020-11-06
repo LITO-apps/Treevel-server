@@ -5,14 +5,12 @@ import (
     "net/http"
     "time"
 
-    "github.com/julienschmidt/httprouter"
-
     "github.com/LITO-apps/Treevel-server/usecase"
 )
 
 type PlayerHandler interface {
-    HandleGetAllPlayers(http.ResponseWriter, *http.Request, httprouter.Params)
-    HandleCreatePlayer(http.ResponseWriter, *http.Request, httprouter.Params)
+    HandleGetAllPlayers(http.ResponseWriter, *http.Request)
+    HandleCreatePlayer(http.ResponseWriter, *http.Request)
 }
 
 type playerHandler struct {
@@ -23,7 +21,7 @@ func NewPlayerHandler(pu usecase.PlayerUseCase) PlayerHandler {
     return &playerHandler{pu}
 }
 
-func (ph playerHandler) HandleGetAllPlayers(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (ph playerHandler) HandleGetAllPlayers(w http.ResponseWriter, r *http.Request) {
     players, err := ph.playerUseCase.GetAllPlayers()
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
@@ -37,7 +35,7 @@ func (ph playerHandler) HandleGetAllPlayers(w http.ResponseWriter, r *http.Reque
     }
 }
 
-func (ph playerHandler) HandleCreatePlayer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (ph playerHandler) HandleCreatePlayer(w http.ResponseWriter, r *http.Request) {
     name := r.FormValue("name")
     t := time.Now()
 
