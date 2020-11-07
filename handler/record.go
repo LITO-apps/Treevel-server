@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gobuffalo/nulls"
+	"github.com/gorilla/mux"
 
 	"github.com/LITO-apps/Treevel-server/usecase"
 )
@@ -13,8 +15,7 @@ import (
 type RecordHandler interface {
     HandleGetAllRecords(http.ResponseWriter, *http.Request)
     HandleCreateRecord(http.ResponseWriter, *http.Request)
-    HandleStageInfoGetAllUserMinClearTime(http.ResponseWriter, *http.Request)
-    HandleStageInfoGetAvgClearRate(http.ResponseWriter, *http.Request)
+    HandleGetStageStat(http.ResponseWriter, *http.Request)
 }
 
 type recordHandler struct {
@@ -60,52 +61,21 @@ func (rh recordHandler) HandleCreateRecord(w http.ResponseWriter, r *http.Reques
     }
 }
 
-func (rh recordHandler) HandleStageInfoGetAllUserMinClearTime(w http.ResponseWriter, r *http.Request) {
+func (rh recordHandler) HandleGetStageStat(w http.ResponseWriter, r *http.Request) {
     // parse post data
-    stageID, err := strconv.Atoi(r.FormValue("stage_id"))
+    vars := mux.Vars(r)
+    stageID := vars["stage_id"]
+
+    ret, err := rh.recordUseCase.GetStageStat(stageID)
 
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return
     }
 
-    ret, err := rh.recordUseCase.GetStageInfoAllUserMinClearTime(stageID)
+    enc := json.NewEncoder(w)
 
-    if err != nil {
-        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-        return
-    }
-
-    // nullじゃない場合
-    if (ret.Valid) {
-        _, err = fmt.Fprintln(w, ret.Float32)
-    } else {
-        _, err = fmt.Fprintln(w, nil)
-    }
-
-    if err != nil {
-        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-        return
-    }
-}
-
-func (rh recordHandler) HandleStageInfoGetAvgClearRate(w http.ResponseWriter, r *http.Request) {
-    // parse post data
-    stageID, err := strconv.Atoi(r.FormValue("stage_id"))
-
-    if err != nil {
-        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-        return
-    }
-
-    ret, err := rh.recordUseCase.GetStageInfoAvgClearRate(stageID)
-
-    if err != nil {
-        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-        return
-    }
-
-    _, err = fmt.Fprintln(w, ret)
+    err = enc.Encode(ret)
 
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)

@@ -1,16 +1,15 @@
 package usecase
 
 import (
-    "github.com/LITO-apps/Treevel-server/domain/models"
-    "github.com/LITO-apps/Treevel-server/domain/repository"
-    "github.com/gobuffalo/nulls"
+	"github.com/LITO-apps/Treevel-server/domain/models"
+	"github.com/LITO-apps/Treevel-server/domain/repository"
+	"github.com/gobuffalo/nulls"
 )
 
 type RecordUseCase interface {
     GetAllRecords() ([]models.Record, error)
     CreateRecord(int, string, bool, int, nulls.Int, nulls.Float32) error
-    GetStageInfoAllUserMinClearTime(int) (nulls.Float32, error) 
-    GetStageInfoAvgClearRate(int) (float32, error)
+    GetStageStat(string) (map[string]interface{}, error)
 }
 
 type recordUseCase struct {
@@ -21,24 +20,14 @@ func NewRecordUseCase(rr repository.RecordRepository) RecordUseCase {
     return &recordUseCase{rr}
 }
 
-func (ru recordUseCase) GetStageInfoAllUserMinClearTime (stageID int) (nulls.Float32, error) {
-    clearTime , err := ru.recordRepository.GetStageInfoAllUserMinClearTime(stageID)
+func (ru recordUseCase) GetStageStat (stageId string) (map[string]interface{}, error) {
+    ret , err := ru.recordRepository.GetStageStat(stageId)
 
     if (err != nil) {
-        return nulls.Float32{}, err
+        return nil, err
     }
 
-    return clearTime, nil
-}
-
-func (ru recordUseCase) GetStageInfoAvgClearRate (stageID int) (float32, error) {
-    clearTime , err := ru.recordRepository.GetStageInfoAvgClearRate(stageID)
-
-    if (err != nil) {
-        return 0, err
-    }
-
-    return clearTime, nil
+    return ret, nil
 }
 
 func (ru recordUseCase) GetAllRecords() ([]models.Record, error) {
