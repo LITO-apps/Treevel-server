@@ -8,7 +8,7 @@ import (
 
 type RecordUseCase interface {
     GetAllRecords() ([]models.Record, error)
-    CreateRecord(int, int, bool, int, nulls.Int, nulls.Float32) error
+    CreateRecord(int, string, bool, int, nulls.Int, nulls.Float32) error
     GetStageInfoAllUserMinClearTime(int) (nulls.Float32, error) 
     GetStageInfoAvgClearRate(int) (float32, error)
 }
@@ -50,7 +50,7 @@ func (ru recordUseCase) GetAllRecords() ([]models.Record, error) {
     return records, nil
 }
 
-func (ru recordUseCase) CreateRecord(playerID int, stageID int, isClear bool, playTimes int, firstClearTimes nulls.Int, clearTime nulls.Float32) error {
+func (ru recordUseCase) CreateRecord(playerID int, stageID string, isClear bool, playTimes int, firstClearTimes nulls.Int, clearTime nulls.Float32) error {
     err := ru.recordRepository.CreateRecord(playerID, stageID, isClear, playTimes, firstClearTimes, clearTime)
     if err != nil {
         return err

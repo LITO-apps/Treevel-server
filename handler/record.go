@@ -42,7 +42,7 @@ func (rh recordHandler) HandleGetAllRecords(w http.ResponseWriter, r *http.Reque
 func (rh recordHandler) HandleCreateRecord(w http.ResponseWriter, r *http.Request) {
     // parse post data
     playerID, err := strconv.Atoi(r.FormValue("player_id"))
-    stageID, err := strconv.Atoi(r.FormValue("stage_id"))
+    stageID := r.FormValue("stage_id")
     isClear, err := strconv.ParseBool(r.FormValue("is_clear"))
     playTimes, err := strconv.Atoi(r.FormValue("play_times"))
     if err != nil {
