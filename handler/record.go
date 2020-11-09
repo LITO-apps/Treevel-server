@@ -66,7 +66,7 @@ func (rh recordHandler) HandleGetStageStat(w http.ResponseWriter, r *http.Reques
     vars := mux.Vars(r)
     stageID := vars["stage_id"]
 
-    ret, err := rh.recordUseCase.GetStageStat(stageID)
+    result, err := rh.recordUseCase.GetStageStat(stageID)
 
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
@@ -75,7 +75,7 @@ func (rh recordHandler) HandleGetStageStat(w http.ResponseWriter, r *http.Reques
 
     enc := json.NewEncoder(w)
 
-    err = enc.Encode(ret)
+    err = enc.Encode(result)
 
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
