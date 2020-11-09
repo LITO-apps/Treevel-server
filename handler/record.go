@@ -52,7 +52,7 @@ func (rh recordHandler) HandleCreateRecord(w http.ResponseWriter, r *http.Reques
     }
 
     firstClearTimes, err := strconv.Atoi(r.FormValue("first_clear_times"))
-    minClearTime, err := strconv.ParseFloat(r.FormValue("clear_time"), 32)
+    minClearTime, err := strconv.ParseFloat(r.FormValue("min_clear_time"), 32)
 
     err = rh.recordUseCase.CreateRecord(playerID, stageID, isClear, playTimes, nulls.Int{Int: firstClearTimes, Valid: err == nil}, nulls.NewFloat32(float32(minClearTime)))
     if err != nil {

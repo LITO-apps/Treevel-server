@@ -39,8 +39,8 @@ func (ru recordUseCase) GetAllRecords() ([]models.Record, error) {
     return records, nil
 }
 
-func (ru recordUseCase) CreateRecord(playerID int, stageID string, isClear bool, playTimes int, firstClearTimes nulls.Int, clearTime nulls.Float32) error {
-    err := ru.recordRepository.CreateRecord(playerID, stageID, isClear, playTimes, firstClearTimes, clearTime)
+func (ru recordUseCase) CreateRecord(playerID int, stageID string, isClear bool, playTimes int, firstClearTimes nulls.Int, minClearTime nulls.Float32) error {
+    err := ru.recordRepository.CreateRecord(playerID, stageID, isClear, playTimes, firstClearTimes, minClearTime)
     if err != nil {
         return err
     }

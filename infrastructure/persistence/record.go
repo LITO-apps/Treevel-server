@@ -58,7 +58,7 @@ func (rp recordPersistence) CreateRecord(playerID int, stageID string, isClear b
 }
 
 func (rp recordPersistence) GetStageStat(stageID string) (map[string]interface{}, error) {
-    clearTime, err := rp.GetStageClearTime(stageID)
+    minClearTime, err := rp.GetStageClearTime(stageID)
 
     if (err != nil) {
         return nil, err
@@ -72,7 +72,7 @@ func (rp recordPersistence) GetStageStat(stageID string) (map[string]interface{}
 
     ret := map[string]interface{}{
         "stage_id": stageID,
-        "clear_time": clearTime,
+        "min_clear_time": minClearTime,
         "clear_rate": clearRate,
     }
 
