@@ -1,15 +1,15 @@
 package main
 
 import (
-    "fmt"
-    "log"
-    "net/http"
+	"fmt"
+	"log"
+	"net/http"
 
-    "github.com/gorilla/mux"
+	"github.com/gorilla/mux"
 
-    "github.com/LITO-apps/Treevel-server/handler"
-    "github.com/LITO-apps/Treevel-server/infrastructure/persistence"
-    "github.com/LITO-apps/Treevel-server/usecase"
+	"github.com/LITO-apps/Treevel-server/handler"
+	"github.com/LITO-apps/Treevel-server/infrastructure/persistence"
+	"github.com/LITO-apps/Treevel-server/usecase"
 )
 
 func main() {
@@ -29,6 +29,7 @@ func main() {
     router.HandleFunc("/get_all_records", recordHandler.HandleGetAllRecords).Methods("GET")
     router.HandleFunc("/create_player", playerHandler.HandleCreatePlayer).Methods("POST")
     router.HandleFunc("/create_record", recordHandler.HandleCreateRecord).Methods("POST")
+    router.HandleFunc("/record/stats/stages/{stage_id:(?:Spring|Summer|Autumn|Winter)-[0-9]{1,2}-[0-9]{1,2}}", recordHandler.HandleGetStageStat).Methods("GET")
 
     // サーバ起動
     fmt.Println("Server Start")
