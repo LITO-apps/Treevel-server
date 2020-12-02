@@ -16,6 +16,7 @@ type RecordHandler interface {
     HandleGetAllRecords(http.ResponseWriter, *http.Request)
     HandleCreateRecord(http.ResponseWriter, *http.Request)
     HandleGetStageStat(http.ResponseWriter, *http.Request)
+    HandleUpdateStageStat(http.ResponseWriter, *http.Request)
 }
 
 type recordHandler struct {
@@ -77,6 +78,31 @@ func (rh recordHandler) HandleGetStageStat(w http.ResponseWriter, r *http.Reques
 
     err = enc.Encode(result)
 
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+}
+
+func (rh recordHandler) HandleUpdateStageStat(w http.ResponseWriter, r *http.Request) {
+    vars := mux.Vars(r)
+    stageID := vars["stage_id"]
+
+    // TODO: stageID validation
+
+    r.ParseForm();
+    playerID, err := strconv.Atoi(r.FormValue("player_id"))
+    firstClearTimes, err := strconv.Atoi(r.FormValue("first_clear_times"))
+    minClearTime, err := strconv.ParseFloat(r.FormValue("min_clear_time"), 32)
+    isClear, err := strconv.ParseBool(r.FormValue("is_clear"))
+    playTimes, err := strconv.Atoi(r.FormValue("play_times"))
+
+    if err != nil {
+        http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+        return
+    }
+
+    err = rh.recordUseCase.UpdateRecord(playerID, stageID, isClear, playTimes, nulls.Int{Int: firstClearTimes, Valid: err == nil}, nulls.NewFloat32(float32(minClearTime)))
     if err != nil {
         http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
         return

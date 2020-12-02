@@ -9,6 +9,7 @@ import (
 type RecordUseCase interface {
     GetAllRecords() ([]models.Record, error)
     CreateRecord(int, string, bool, int, nulls.Int, nulls.Float32) error
+    UpdateRecord(int, string, bool, int, nulls.Int, nulls.Float32) error
     GetStageStat(string) (map[string]interface{}, error)
 }
 
@@ -41,6 +42,15 @@ func (ru recordUseCase) GetAllRecords() ([]models.Record, error) {
 
 func (ru recordUseCase) CreateRecord(playerID int, stageID string, isClear bool, playTimes int, firstClearTimes nulls.Int, minClearTime nulls.Float32) error {
     err := ru.recordRepository.CreateRecord(playerID, stageID, isClear, playTimes, firstClearTimes, minClearTime)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+
+func (ru recordUseCase) UpdateRecord(playerID int, stageID string, isClear bool, playTimes int, firstClearTimes nulls.Int, minClearTime nulls.Float32) error {
+    err := ru.recordRepository.UpdateRecord(playerID, stageID, isClear, playTimes, firstClearTimes, minClearTime)
     if err != nil {
         return err
     }

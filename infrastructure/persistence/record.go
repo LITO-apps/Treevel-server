@@ -57,6 +57,27 @@ func (rp recordPersistence) CreateRecord(playerID int, stageID string, isClear b
     return nil
 }
 
+func (rp recordPersistence) UpdateRecord(playerID int, stageID string, isClear bool, playTimes int, firstClearTimes nulls.Int, minClearTime nulls.Float32) error {
+    record := models.Record{}
+
+    db := rp.db
+
+    db.Where("stage_id = ?", stageID).Where("player_id = ?", playerID).First(&record)
+
+    record.IsClear = isClear
+    record.PlayTimes = playTimes
+    record.FirstClearTimes = firstClearTimes
+    record.MinClearTime = minClearTime
+
+    err := db.Update(&record)
+
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+
 func (rp recordPersistence) GetStageStat(stageID string) (map[string]interface{}, error) {
     minClearTime, err := rp.GetStageClearTime(stageID)
 

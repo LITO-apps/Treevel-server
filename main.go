@@ -30,6 +30,7 @@ func main() {
     router.HandleFunc("/create_player", playerHandler.HandleCreatePlayer).Methods("POST")
     router.HandleFunc("/create_record", recordHandler.HandleCreateRecord).Methods("POST")
     router.HandleFunc("/record/stats/stages/{stage_id:(?:Spring|Summer|Autumn|Winter)-[0-9]{1,2}-[0-9]{1,2}}", recordHandler.HandleGetStageStat).Methods("GET")
+    router.HandleFunc("/record/stats/stages/{stage_id:(?:Spring|Summer|Autumn|Winter)-[0-9]{1,2}-[0-9]{1,2}}", recordHandler.HandleUpdateStageStat).Methods("POST")
 
     // サーバ起動
     fmt.Println("Server Start")
