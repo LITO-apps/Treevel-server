@@ -87,11 +87,11 @@ func (rh recordHandler) HandleGetStageStat(w http.ResponseWriter, r *http.Reques
 func (rh recordHandler) HandleUpdateStageStat(w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
     stageID := vars["stage_id"]
+    playerID, err := strconv.Atoi(vars["player_id"])
 
-    // TODO: stageID validation
+    // TODO: stageID validation and playerID validation
 
     r.ParseForm();
-    playerID, err := strconv.Atoi(r.FormValue("player_id"))
     firstClearTimes, err := strconv.Atoi(r.FormValue("first_clear_times"))
     minClearTime, err := strconv.ParseFloat(r.FormValue("min_clear_time"), 32)
     isClear, err := strconv.ParseBool(r.FormValue("is_clear"))
